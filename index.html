@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEGENDEDITORYT64 | Armwrestling Legends</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+-Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --primary: #d32f2f;
+            --secondary: #212121;
+            --accent: #ff9800;
+            --gold: #ffd700;
+            --dark: #121212;
+            --light: #f5f5f5;
+            --text: #e0e0e0;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.85);
+            border-bottom: 1px solid rgba(255, 152, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            padding: 15px 5%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            background: linear-gradient(to right, var(--gold), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            position: relative;
+            padding: 5px 0;
+            transition: var(--transition);
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            font-size: 2rem;
+            color: var(--gold);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-size: 6rem;
+            font-weight: 800;
+            font-family: 'Oswald', sans-serif;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            background: linear-gradient(to right, var(--gold), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), #b71c1c);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: var(--transition);
+            margin: 20px 15px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(211, 47, 47, 0.6);
+        }
+
+        .cta-button i {
+            margin-right: 12px;
+            animation: pulse 2s infinite;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .social-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--gold);
+            transition: var(--transition);
+            text-decoration: none;
+            border: 2px solid transparent;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-10px) rotate(10deg);
+            box-shadow: 0 10px 25px rgba(211, 47, 47, 0.4);
+            border-color: var(--gold);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            perspective: 500px;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1;
+            font-family: 'Oswald', sans-serif;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 150px 5%;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 100px;
+            font-size: 4rem;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-family: 'Oswald', sans-serif;
+            color: var(--gold);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 5px;
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        /* Video Section */
+        .video-container {
+            display: flex;
+            justify-content: center;
+            margin: 80px 0;
+            perspective: 1000px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 4px solid var(--primary);
+            transform-style: preserve-3d;
+            transition: var(--transition);
+        }
+
+        .video-wrapper:hover {
+            transform: rotateY(5deg) rotateX(5deg) scale(1.03);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            display: block;
+        }
+
+        /* Legends Section */
+        .legends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 50px;
+            margin-top: 80px;
+        }
+
+        .legend-card {
+            background: rgba(25, 25, 25, 0.8);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .legend-card:hover {
+            transform: translateY(-20px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            border-color: var(--primary);
+        }
+
+        .legend-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            transition: var(--transition);
+            background: linear-gradient(45deg, #2c2c2c, #1a1a1a);
+        }
+
+        .legend-card:hover .legend-image {
+            transform: scale(1.05);
+        }
+
+        .legend-info {
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(33, 33, 33, 0.9), rgba(18, 18, 18, 0.95));
+        }
+
+        .legend-name {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--gold);
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .legend-title {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+        }
+
+        .legend-desc {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: linear-gradient(45deg, var(--primary), #b71c1c);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);
+            transform: rotate(10deg);
+        }
+
+        /* About Section */
+        .about-section {
+            background: rgba(20, 20, 20, 0.9);
+            border-radius: 30px;
+            padding: 70px;
+            margin: 100px 0;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 152, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .about-title {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 50px;
+            color: var(--gold);
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 350px;
+        }
+
+        .about-text p {
+            margin-bottom: 30px;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+        }
+
+        .highlight {
+            color: var(--gold);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transform: rotate(-2deg);
+            transition: var(--transition);
+        }
+
+        .about-image:hover {
+            transform: rotate(0) scale(1.03);
+        }
+
+        .about-image img {
+            width: 100%;
+            display: block;
+            transition: var(--transition);
+            background: linear-gradient(45deg, #2c2c2c, #1a1a1a);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(to top, #0a0a0a, #000);
+            padding: 100px 5% 50px;
+            text-align: center;
+            border-top: 3px solid var(--primary);
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .footer-logo {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, var(--gold), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .copyright {
+            margin-top: 60px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        .creator {
+            color: var(--gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .pulse {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 5rem;
+            }
+            
+            .section-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 4rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 3rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .about-section {
+                padding: 50px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.7rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .video-wrapper iframe {
+                height: 350px;
+            }
+            
+            .stat-number {
+                font-size: 2.8rem;
+            }
+            
+            .about-title {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+                margin: 10px 5px;
+            }
+            
+            .video-wrapper iframe {
+                height: 250px;
+            }
+            
+            .legend-name {
+                font-size: 1.8rem;
+            }
+            
+            .footer-logo {
+                font-size: 3rem;
+            }
+            
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="logo">GAUTAM<span style="color: var(--primary)">MAURYA</span></div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#videos">Videos</a>
+            <a href="#legends">Legends</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title floating">ARM WRESTLING <span class="glow">LEGENDS</span></h1>
+            <h2 class="hero-subtitle">Power  Technique  Domination</h2>
+            
+            <div>
+                <a href="https://youtube.com/@legendeditoryt64?si=gZTHQL8l7t3eMmUF" class="cta-button" target="_blank">
+                    <i class="fab fa-youtube"></i> SUBSCRIBE NOW
+                </a>
+                <a href="https://youtube.com/shorts/DQyuYKHPr0I?si=0CWaVvjpLMhScpOb" class="cta-button" target="_blank">
+                    <i class="fas fa-play"></i> WATCH LATEST
+                </a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="https://youtube.com/@legendeditoryt64?si=gZTHQL8l7t3eMmUF" class="social-icon" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.instagram.com/gautam.64_/" class="social-icon" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://t.me/legendcreator64" class="social-icon" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                </a>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number pulse">1M</div>
+                    <div class="stat-label">Views</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number pulse">25K</div>
+                    <div class="stat-label">Subscribers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number pulse">150</div>
+                    <div class="stat-label">Videos</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Video Section -->
+    <section class="section" id="videos">
+        <h2 class="section-title">LATEST ARM WRESTLING ACTION</h2>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/DQyuYKHPr0I" title="Latest Arm Wrestling Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Arm Wrestling Legends Section -->
+    <section class="section" id="legends">
+        <h2 class="section-title">THE UNBEATABLE LEGENDS</h2>
+        <div class="legends-grid">
+            <!-- Devon Larratt -->
+            <div class="legend-card">
+                <div class="badge">CANADA</div>
+                <img src="./devo.jpg" alt="Devon Larratt" class="legend-image" loading="lazy" decoding="async">
+                <div class="legend-info">
+                    <h3 class="legend-name">DEVON LARRATT</h3>
+                    <div class="legend-title">THE LEGEND</div>
+                    <p class="legend-desc">Known for his endurance and psychological warfare, Devon has dominated the sport with his unique techniques and strategic approach to matches.</p>
+                </div>
+            </div>
+            
+            <!-- Levan Saginashvili -->
+            <div class="legend-card">
+                <div class="badge">GEORGIA</div>
+                <img src="./levan.jpg" alt="Levan Saginashvili" class="legend-image" loading="lazy" decoding="async">
+                <div class="legend-info">
+                    <h3 class="legend-name">LEVAN SAGINASHVILI</h3>
+                    <div class="legend-title">THE GEORGIAN HULK</div>
+                    <p class="legend-desc">With his massive size and unparalleled strength, Levan is considered the strongest arm wrestler in the world, crushing opponents with ease.</p>
+                </div>
+            </div>
+            
+            <!-- Denis Cyplenkov -->
+            <div class="legend-card">
+                <div class="badge">RUSSIA</div>
+                <img src="./denis.jpg" alt="Denis Cyplenkov" class="legend-image" loading="lazy" decoding="async">
+                <div class="legend-info">
+                    <h3 class="legend-name">DENIS CYPLENKOV</h3>
+                    <div class="legend-title">THE RUSSIAN-HULK</div>
+                    <p class="legend-desc">Famous for his massive hands and crushing hook, Denis is a force of nature on the table with incredible wrist control and power.</p>
+                </div>
+            </div>
+            
+            <!-- John Brzenk -->
+            <div class="legend-card">
+                <div class="badge">USA</div>
+                <img src="./john.jpg" alt="John Brzenk" class="legend-image" loading="lazy" decoding="async">
+                <div class="legend-info">
+                    <h3 class="legend-name">JOHN BRZENK</h3>
+                    <div class="legend-title">G.O.A.T.</div>
+                    <p class="legend-desc">Widely regarded as the greatest of all time, John's technical mastery and versatility have made him a dominant force for over three decades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="about-section">
+            <h2 class="about-title">ABOUT LEGEND EDITOR</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Welcome to the ultimate destination for arm wrestling enthusiasts - <span class="highlight">LEGENDEDITORYT64</span>, curated by <span class="highlight">Legend Editor</span>.</p>
+                    
+                    <p>We bring you the most intense, technical, and breathtaking moments from the world of professional arm wrestling. Our channel is dedicated to showcasing:</p>
+                    
+                    <p> <span class="highlight">Elite Matches</span> - Witness the world's strongest arm wrestlers battle for supremacy</p>
+                    <p> <span class="highlight">Training Breakdowns</span> - Learn techniques from legends like Devon Larratt and Levan Saginashvili</p>
+                    <p> <span class="highlight">Championship Coverage</span> - Exclusive access to top tournaments worldwide</p>
+                    <p> <span class="highlight">Cinematic Edits</span> - Professionally crafted highlights showcasing the sport's most dramatic moments</p>
+                    
+                    <p>Our mission is to elevate arm wrestling to its rightful place as a premier strength sport, celebrating the athletes who push human limits.</p>
+                    
+                    <p>Join our community of dedicated fans and experience the raw power and technical mastery that defines professional arm wrestling!</p>
+                    
+                    <a href="https://youtube.com/@legendeditoryt64?si=gZTHQL8l7t3eMmUF" class="cta-button" target="_blank">
+                        <i class="fab fa-youtube"></i> JOIN THE LEGEND ARMY
+                    </a>
+                </div>
+                <div class="about-image">
+                    <img src="./subscribe.jpg" alt="SUBSCRIBE ME" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-logo">LEGENDEDITORYT64</div>
+        
+        <div class="social-icons">
+            <a href="https://youtube.com/@legendeditoryt64?si=gZTHQL8l7t3eMmUF" class="social-icon" target="_blank">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.instagram.com/gautam.64_/" class="social-icon" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://t.me/legendcreator64" class="social-icon" target="_blank">
+                <i class="fab fa-telegram"></i>
+            </a>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2023 LEGENDEDITORYT64 | The Ultimate Arm Wrestling Channel | Created by <span class="creator">Legend Editor</span>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffd700" },
+                shape: { type: "circle" },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ff9800",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            navLinks.classList.toggle('active');
+        });
+        
+        // Section animations
+        gsap.utils.toArray('.section').forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top bottom-=100',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 1.2
+            });
+        });
+        
+        // Card animations
+        gsap.utils.toArray('.legend-card').forEach((card, index) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top bottom-=100',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                y: 100,
+                duration: 0.8,
+                delay: index * 0.2
+            });
+        });
+        
+        // Button hover effect
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                gsap.to(button, { 
+                    y: -8, 
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                gsap.to(button, { 
+                    y: 0, 
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+        
+        // Floating animation for stats
+        gsap.to('.stat-item', {
+            y: 10,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+    </script>
+</body>
+</html>
